@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.soundsightapp.infrastructpure.mysql.dao.UserDao">
+
+    <resultMap id="userMap" type="com.example.soundsightapp.infrastructpure.mysql.po.User">
+        <id column="id" property="id"/>
+        <result column="user_name" property="userName"/>
+        <result column="password" property="password"/>
+        <result column="avatar_code" property="avatarCode"/>
+        <result column="preferences" property="preferences"/>
+    </resultMap>
+    <insert id="save" parameterType="com.example.soundsightapp.infrastructpure.mysql.po.User">
+        INSERT INTO user (user_name, password, avatar_code, preferences)
+        VALUES (#{userName}, #{password}, #{avatarCode}, #{preferences})
+    </insert>
+
+    <select id="findUsername" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM user WHERE user_name = #{userName}
+    </select>
+    <select id="findUsernameAndPwd" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM user WHERE user_name = #{username} and password = #{password}
+    </select>
+    <select id="findUserByUsernameAndPassword"
+            resultType="com.example.soundsightapp.infrastructpure.mysql.po.User" resultMap="userMap">
+        select * from user where user_name = #{username} and password = #{password}
+    </select>
+    <select id="getUserById" resultType="com.example.soundsightapp.infrastructpure.mysql.po.User" resultMap="userMap">
+        select * from user where id = #{userId}
+    </select>
+
+
+</mapper>

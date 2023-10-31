@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.soundsightapp.infrastructpure.mysql.dao.HotVideoDao">
+
+    <resultMap id="hotVideoMap" type="com.example.soundsightapp.infrastructpure.mysql.po.HotVideo">
+        <id column="id" property="id"/>
+        <result column="video_id" property="videoId"/>
+        <result column="video_type" property="videoType"/>
+    </resultMap>
+    <insert id="insertBatch" parameterType="list">
+        INSERT INTO hot_video (video_id, video_type)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.videoId}, #{item.videoType})
+        </foreach>
+    </insert>
+
+
+    <select id="getVideos" resultType="com.example.soundsightapp.infrastructpure.mysql.po.Video" resultMap="hotVideoMap">
+        SELECT *
+        FROM hot_video
+        where id >= #{lastIndex}
+            limit 2
+    </select>
+
+
+</mapper>

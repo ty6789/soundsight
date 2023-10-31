@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.soundsightapp.infrastructpure.mysql.dao.UserVideoDao">
+
+    <resultMap id="userMap" type="com.example.soundsightapp.infrastructpure.mysql.po.UserVideo">
+        <id column="id" property="id"/>
+        <result column="userId" property="userId"/>
+        <result column="username" property="username"/>
+        <result column="video_id" property="videoId"/>
+        <result column="video_type" property="videoType"/>
+        <result column="avatar" property="avatar"/>
+    </resultMap>
+    <select id="selectByVideoIdAndType" resultType="com.example.soundsightapp.infrastructpure.mysql.po.UserVideo" resultMap="userMap">
+        select * from user_video where video_id = #{videoId} and video_type = #{type}
+    </select>
+
+</mapper>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="referrer" content="no-referrer" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Video App</title>
+  <!-- 示例: 使用FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="/index/index.css">
+  <link href="https://vjs.zencdn.net/7.8.4/video-js.css" rel="stylesheet" />
+  <script src="https://vjs.zencdn.net/7.8.4/video.js"></script>
+</head>
+<body>
+
+<nav id="video-categories">
+  <ul id="category-list">
+    <li><a href="#hotvideos">热门视频</a></li>
+    <li><a href="#recommendations">推荐</a></li>
+    <li><a href="#anime">动漫</a></li>
+    <li><a href="#sports">体育</a></li>
+    <li><a href="#food">饮食</a></li>
+    <li><a href="#arts">艺术</a></li>
+    <li><a href="#travel">旅行</a></li>
+    <li><a href="#technology">科技</a></li>
+    <li><a href="#lifestyle">生活</a></li>
+    <li><a href="#entertainment">娱乐</a></li>
+  </ul>
+  <div class="user-avatar" id="avatar"></div>
+  <!-- ... -->
+  <div class="dropdown">
+    <div class="dropdown-header">
+      <span class="selected" id="username">未登录</span>
+      <span class="arrow">▲</span>
+    </div>
+    <div class="dropdown-content" id="dropdownContent">
+      <!-- 下拉列表选项将在这里通过JavaScript填充 -->
+    </div>
+  </div>
+  <!-- ... -->
+
+
+</nav>
+<div class="content-container">
+  <div id="videoContainer">
+    <video
+          id="my-video"
+          class="video-js"
+          controls
+          preload="auto"
+          width="1000"
+          height="580"
+          data-setup="{}"
+  >
+    <source src="https://media.w3.org/2010/05/sintel/trailer.mp4" type="video/mp4" />
+    <p class="vjs-no-js">
+      To view this video please enable JavaScript, and consider upgrading to a
+      web browser that
+      <a href="https://videojs.com/html5-video-support/" target="_blank">
+        supports HTML5 video
+      </a>
+    </p>
+  </video>
+  <div id="navigation">
+    <button class="nav-button" onclick="prevVideo()">上一个</button>
+    <button class="nav-button" onclick="nextVideo()">下一个</button>
+
+    <!-- 新增的部分开始 -->
+    <button class="share-button" onclick="shareVideo()">
+      <i class="fas fa-share-square"></i><span id="share-count">转发</span>
+    </button>
+    <button class="favorite-button" onclick="toggleFavorite()">
+      <i class="fas fa-heart"></i><span id="favorite-count">(0)</span>
+    </button>
+    <button class="like-button" onclick="toggleLike()">
+      <i class="fas fa-thumbs-up"></i><span id="like-count">(0)</span>
+    </button>
+    <div class="other-user-avatar" id="other-avatar"></div>
+    <span id="other-username">用户名</span>
+    <button class="follow-button">
+      <i class="fas fa-user-plus"></i> 关注
+    </button>
+    <!-- 新增的部分结束 -->
+  </div>
+</div>
+  <div class="wrapper">
+    <!-- 新增的评论框开始 -->
+    <div class="comment-box">
+      <div id="comments">
+        <!-- 评论内容将在这里显示 -->
+      </div>
+    </div>
+    <!-- 新增的评论框结束 -->
+
+    <div class="phone-mockup">
+      <div class="phone-header"></div>
+      <div class="phone-screen">
+        <iframe class="no-border" src="http://localhost:8080/qiniu/qiniu.html" height="400" width="200"></iframe>
+      </div>
+      <div class="phone-footer"></div>
+    </div>
+  </div>
+
+</div>
+<script th:inline="javascript">
+  var videoData = /*[[${video}]]*/ null;
+</script>
+<script src="/index/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户注册</title>
+    <link rel="stylesheet" href="/register/register.css">
+</head>
+<body>
+<div class="registration-container">
+    <h2>用户注册</h2>
+    <form id="registrationForm">
+        <!-- 隐藏的input元素用于存储当前选中的头像编号 -->
+        <input type="hidden" name="selectedAvatar" id="selectedAvatar" value="1">
+        <div class="form-field">
+            <label for="username">用户名:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="form-field">
+            <label for="password">密码:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div class="form-field">
+            <label for="confirmPassword">确认密码:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+        </div>
+        <!-- 头像选择区域 -->
+        <div class="form-field">
+            <label>请选择你的头像</label>
+        </div>
+        <div class="avatar-scroll-container">
+            <div class="avatar-item"><img src="/photo/1.png" alt="Avatar 1"></div>
+            <div class="avatar-item"><img src="/photo/2.png" alt="Avatar 2"></div>
+            <div class="avatar-item"><img src="/photo/3.png" alt="Avatar 3"></div>
+            <div class="avatar-item"><img src="/photo/4.png" alt="Avatar 4"></div>
+            <div class="avatar-item"><img src="/photo/5.png" alt="Avatar 5"></div>
+            <div class="avatar-item"><img src="/photo/6.png" alt="Avatar 6"></div>
+            <div class="avatar-item"><img src="/photo/7.png" alt="Avatar 7"></div>
+            <div class="avatar-item"><img src="/photo/8.png" alt="Avatar 8"></div>
+            <div class="avatar-item"><img src="/photo/9.png" alt="Avatar 9"></div>
+            <div class="avatar-item"><img src="/photo/10.png" alt="Avatar 10"></div>
+            <div class="avatar-item"><img src="/photo/11.png" alt="Avatar 11"></div>
+            <div class="avatar-item"><img src="/photo/12.png" alt="Avatar 12"></div>
+        </div>
+
+        <!-- 用户喜好选择区域 -->
+        <div class="form-field">
+            <label>选择你的喜好:</label>
+            <div class="preferences-grid">
+                <div class="preference-item" data-value="anime">动漫</div>
+                <div class="preference-item" data-value="sports">体育</div>
+                <div class="preference-item" data-value="food">饮食</div>
+                <div class="preference-item" data-value="arts">艺术</div>
+                <div class="preference-item" data-value="travel">旅行</div>
+                <div class="preference-item" data-value="technology">科技</div>
+                <div class="preference-item" data-value="lifestyle">生活</div>
+                <div class="preference-item" data-value="entertainment">娱乐</div>
+            </div>
+
+        </div>
+        <button type="submit">注册</button>
+    </form>
+</div>
+</body>
+</html>

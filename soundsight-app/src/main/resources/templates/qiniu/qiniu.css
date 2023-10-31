@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Rancho&effect=shadow-multiple'); /* 你可以替换这里的URL为你选择的字体 */
+
+.font-effect-artistic-text {
+    font-family: 'Special Font', cursive; /* 使用你选择的字体 */
+    font-size: 100px;
+    text-align: center;
+    margin-left: 30%;
+    color: #007BFF;
+}
