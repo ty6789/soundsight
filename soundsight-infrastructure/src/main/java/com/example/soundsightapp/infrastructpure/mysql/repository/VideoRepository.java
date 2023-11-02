@@ -1,19 +1,30 @@
 package com.example.soundsightapp.infrastructpure.mysql.repository;
 
+
+import com.alibaba.fastjson2.JSON;
 import com.example.soundsight.type.VideoResponse;
 import com.example.soundsightapp.domain.video.repository.IVideoRepository;
 import com.example.soundsightapp.infrastructpure.mysql.dao.*;
 import com.example.soundsightapp.infrastructpure.mysql.po.Favorite;
 import com.example.soundsightapp.infrastructpure.mysql.po.HotVideo;
+import com.example.soundsightapp.infrastructpure.mysql.po.UserVideo;
 import com.example.soundsightapp.infrastructpure.mysql.po.Video;
-import org.apache.ibatis.annotations.Mapper;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
+
 
 @Repository
 public class VideoRepository extends BaseVideoRepository implements IVideoRepository {
@@ -21,12 +32,10 @@ public class VideoRepository extends BaseVideoRepository implements IVideoReposi
     @Autowired
     public VideoRepository(
             FavoriteDao favoriteDao,
-            FollowDao followDao,
             UserVideoDao userVideoDao,
             UserDao userDao,
             HotVideoDao hotVideoDao) {
         super.favoriteDao = favoriteDao;
-        super.followDao = followDao;
         super.userVideoDao = userVideoDao;
         super.userDao = userDao;
         super.hotVideoDao = hotVideoDao;
@@ -113,7 +122,46 @@ public class VideoRepository extends BaseVideoRepository implements IVideoReposi
             videoDao.batchUpdateIsHot(videos);
             videos.stream().map(video -> new HotVideo(video.getId(), type)).forEach(hotVideo -> hotVideos.add(hotVideo));
         }
+        if (hotVideos == null || hotVideos.size() == 0)return;
         Collections.shuffle(hotVideos);
         hotVideoDao.insertBatch(hotVideos);
+    }
+
+    @Override
+    public List<VideoResponse> searchVideos(String keyWords, Integer userId) {
+        SearchRequest searchRequest = new SearchRequest("videos");
+        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+        sourceBuilder.query(QueryBuilders.matchQuery("desc", keyWords));
+        searchRequest.source(sourceBuilder);
+
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException("es搜索失败");
+        }
+        List<VideoResponse> res = new ArrayList<>();
+        SearchHits hits = searchResponse.getHits();
+        for (SearchHit hit : hits) {
+            String sourceAsString = hit.getSourceAsString();
+            Video video = JSON.parseObject(sourceAsString, Video.class);
+            VideoDao videoDao = videoDaos.get(video.getType());
+            video = videoDao.getVideoById(video.getId());
+            res.add(createVideoResponse(video, userId, video.getType()));
+        }
+        return res;
+    }
+
+    @Override
+    public List<VideoResponse> findVideoByIdAndUserId(String id, String myId) {
+        List<UserVideo> userVideos = userVideoDao.findVideosByUserId(id);
+        List<VideoResponse> res = new ArrayList<>();
+        for (UserVideo userVideo : userVideos) {
+            String type = userVideo.getVideoType();
+            VideoDao videoDao = videoDaos.get(type);
+            Video video = videoDao.getVideoById(userVideo.getVideoId());
+            res.add(createVideoResponse(video, Integer.parseInt(myId), type));
+        }
+        return res;
     }
 }

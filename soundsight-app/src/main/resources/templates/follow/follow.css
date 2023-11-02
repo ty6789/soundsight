@@ -1,0 +1,14 @@
+/* favorite.css */
+.follow-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    color: white;
+    cursor: pointer;  /* 这个属性会在鼠标悬停时显示一个指示性的手指图标 */
+}
+
+.follow-item img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}

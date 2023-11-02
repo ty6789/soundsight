@@ -29,4 +29,14 @@ public class VideoController {
     public List<VideoResponse> getFavorites(@RequestParam Integer userId) {
         return videoService.getFavorites(userId);
     }
+
+    @GetMapping("/search")
+    public List<VideoResponse> searchVideos(@RequestParam String keyWords, @RequestParam Integer userId) {
+        return videoService.searchVideos(keyWords, userId);
+    }
+
+    @GetMapping("/findVideoById")
+    public List<VideoResponse> findVideoById(@RequestParam String id, @RequestParam String myId) {
+        return videoService.findVideoByIdAndUserId(id, myId);
+    }
 }

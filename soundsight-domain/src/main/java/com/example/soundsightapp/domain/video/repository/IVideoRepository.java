@@ -14,4 +14,8 @@ public interface IVideoRepository {
     VideoResponse getVideoByIdAndTypeAndUserId(String videoId, String videoType, String userId);
 
     void findHotVideos();
+
+    List<VideoResponse> searchVideos(String keyWords, Integer userId);
+
+    List<VideoResponse> findVideoByIdAndUserId(String id, String myId);
 }

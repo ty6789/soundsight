@@ -26,7 +26,7 @@ public class VideoResponse {
 
     private Integer favoriteCount;
 
-    private boolean isFollowed;
+    private Boolean isFollowed;
 
     private String descr;
 

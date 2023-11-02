@@ -13,4 +13,6 @@ public class Video {
     private Integer favorite;
 
     private Integer isHot;
+
+    private String type;
 }

@@ -13,5 +13,8 @@
     <select id="selectByVideoIdAndType" resultType="com.example.soundsightapp.infrastructpure.mysql.po.UserVideo" resultMap="userMap">
         select * from user_video where video_id = #{videoId} and video_type = #{type}
     </select>
+    <select id="findVideosByUserId" resultType="com.example.soundsightapp.infrastructpure.mysql.po.UserVideo" resultMap="userMap">
+        select * from user_video where userId = #{id}
+    </select>
 
 </mapper>

@@ -3,7 +3,7 @@
     url: 'https://example.com/video.mp4';
     type: 'sports';
     isFavorite: false;
-    isLike: false;
+    isLiked: false;
     userId: '1';
     username: '用户';
     avatar: '2';
@@ -18,6 +18,11 @@ let videoQueue = []; // 用于存储从后端接收到的视频列表
 let playHistory = {};  // 初始化为空对象
 let currentIndex = {};  // 初始化为空对象
 let hasRunOnce = false;  // 全局变量，用于跟踪freshAll是否已经运行过
+let myFavorite = false;
+let myFollow = false;
+let myFans = false;
+let searchVideo = false;
+let myVideos = false;
 function freshAll() {
     if (!hasRunOnce && videoData && Object.keys(videoData).length !== 0) {
         console.log(videoData);
@@ -40,6 +45,8 @@ function freshAll() {
         .then(data => {
             if (data && data.length > 0) {
                 console.log(data[0].isLiked);
+                console.log(data[0].isFollowed);
+                console.log(data[0]);
                 videoQueue = data.map(videoResponse => ({
                     id: videoResponse.videoId,
                     url: videoResponse.videoURL,
@@ -126,6 +133,7 @@ function toggleFavorite() {
     console.log(isFavorited);
     updateFavoriteStatus();
     updateFavoriteCount();
+    disableClickForDuration(3000);
     const method = isFavorited ? 'POST' : 'DELETE';
     const userId = getCookie('userId');  // 获取用户ID
     console.log(userId);
@@ -143,6 +151,13 @@ function toggleFavorite() {
         },
         body: JSON.stringify({userId, itemId, itemType}),
     }).then( ()=>{
+        if (myFavorite) {
+            fetchFavorites();
+        }else if (searchVideo) {
+            searchFunction();
+        }else if (currentIndex != -1) {
+            findVideoById(currentId);
+        }
     });
  }
 function toggleLike() {
@@ -154,6 +169,7 @@ function toggleLike() {
     console.log(isLiked);
     updateLikedStatus();
     updateLikedCount();
+    disableClickForDuration(3000);
     const method = isLiked ? 'POST' : 'DELETE';
     const userId = getCookie('userId');  // 获取用户ID
     console.log(userId);
@@ -171,6 +187,13 @@ function toggleLike() {
         },
         body: JSON.stringify({userId, itemId, itemType}),
     }).then( ()=>{
+        if (myFavorite) {
+            fetchFavorites();
+        }else if (searchVideo) {
+            searchFunction();
+        }else if (currentIndex != -1) {
+            findVideoById(currentId);
+        }
     });
 }
 async function shareVideo() {
@@ -185,6 +208,43 @@ async function shareVideo() {
     } catch (err) {
         console.error('Error in copying text: ', err);
     }
+}
+function toggleFollow() {
+    if (!getCookie('userId')){
+        alert("请先登录");
+        return;
+    }
+    isFollowed = !isFollowed;
+    console.log(isFollowed);
+    updateFollowStatus();
+    updateFollowText();
+    disableClickForDuration(3000);
+    const method = isFollowed ? 'POST' : 'DELETE';
+    const userId = getCookie('userId');  // 获取用户ID
+    console.log(userId);
+    let categoryHistory = playHistory[currentCategory] || [];
+    let categoryIndex = currentIndex[currentCategory] || 0;
+    console.log(categoryIndex);
+    console.log(categoryHistory[categoryIndex]);
+    categoryHistory[categoryIndex].isFollowed = isFollowed;
+    let followed = categoryHistory[categoryIndex].userId;
+    fetch('/follow', {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({userId, followed}),
+    }).then( ()=>{
+        if (myFavorite) {
+            fetchFavorites();
+        }else if (searchVideo) {
+            searchFunction();
+        }else if (myFollow) {
+            findMyFollow();
+        }else if (currentIndex != -1) {
+            findVideoById(currentId);
+        }
+    });
 }
 function updateFavoriteStatus() {
     var icon = favoritebutton.querySelector('i');
@@ -224,9 +284,20 @@ function updateLikedCount() {
 }
 function updateFollowStatus() {
     var icon = followbutton.querySelector('i');
-    icon.style.color = isLiked ? 'green' : 'white';
+    icon.style.color = isFollowed ? 'yellow' : 'white';
 }
+function updateFollowText() {
+    let icon = followbutton.querySelector('i');
+    let text = followbutton.querySelector('span');
 
+    if (isFollowed) {
+        icon.className = 'fas fa-user-check';  // 修改为已关注的图标
+        text.textContent = '已关注';
+    } else {
+        icon.className = 'fas fa-user-plus';   // 修改为关注的图标
+        text.textContent = '关注';
+    }
+}
 //播放下一个视频
 function playNextVideo() {
     if(videoQueue.length === 0) {
@@ -323,6 +394,7 @@ function playVideo(video) {
 }
 
 function fresh(video) {
+    updateButtonVisibility();
     isFavorited = video.isFavorite;
     isLiked = video.isLiked;
     isFollowed = video.isFollowed;
@@ -330,19 +402,12 @@ function fresh(video) {
     updateFavoriteStatus();
     updateLikedStatus();
     updateFollowStatus();
+    updateFollowText();
     // 更新用户头像和用户名
     document.getElementById('other-avatar').style.backgroundImage = `url(${video.avatar})`;
     document.getElementById('other-username').textContent = video.username;
     document.getElementById('like-count').textContent = `${video.likeCount || 0}`;
     document.getElementById('favorite-count').textContent = `${video.favoriteCount || 0}`;
-
-    // 更新是否关注
-    const followButtonIcon = document.querySelector('.follow-button i');
-    if (video.isFollowed) {  // 假设 video 对象有一个 isFollowed 属性
-        followButtonIcon.style.color = 'green';
-    } else {
-        followButtonIcon.style.color = 'white';
-    }
 
     // 更新视频简介
     document.getElementById('comments').innerHTML = `
@@ -367,6 +432,9 @@ function addVideoToHistory(video) {
 function handleMenuItemClick(action) {
     const phoneContainer = document.querySelector('.phone-screen');
     switch (action) {
+        case 'qiniu':
+            updatePhoneScreenWithNewContent();
+            break;
         case 'login':
             fetch('http://localhost:8080/login/login.html')
                 .then(response => response.text())
@@ -388,6 +456,11 @@ function handleMenuItemClick(action) {
             setCookie('avatar', "", -1);
             location.reload();
         case 'myFavorites':
+            myFavorite = true;
+            searchVideo = false;
+            myFollow = false;
+            myFans = false;
+            currentId = -1;
             fetch('http://localhost:8080/favorite/favorite.html')
                 .then(response => response.text())
                 .then(data => {
@@ -408,6 +481,71 @@ function handleMenuItemClick(action) {
                     script.src = 'http://localhost:8080/register/register.js';
                     // 将脚本添加到phoneContainer中，而不是body
                     phoneContainer.appendChild(script);
+                })
+                .catch(error => {
+                    console.error("Error loading HTML: ", error);
+                });
+            break;
+        case 'search':
+            searchVideo = true;
+            myFavorite = false;
+            myFollow = false;
+            myFans = false;
+            currentId = -1;
+            fetch('http://localhost:8080/search/search.html')
+                .then(response => response.text())
+                .then(data => {
+                    phoneContainer.innerHTML = data;
+                    addSearch();
+                })
+                .catch(error => {
+                    console.error("Error loading HTML: ", error);
+                });
+            break;
+        case 'myFollow':
+            myFollow = true;
+            myFavorite = false;
+            searchVideo = false;
+            myFans = false;
+            currentId = -1;
+            fetch('http://localhost:8080/follow/follow.html')
+                .then(response => response.text())
+                .then(data => {
+                    phoneContainer.innerHTML = data;
+                    findMyFollow();
+                })
+                .catch(error => {
+                    console.error("Error loading HTML: ", error);
+                });
+            break;
+        case 'myFans':
+            myFans = true;
+            myFollow = false;
+            myFavorite = false;
+            searchVideo = false;
+            currentId = -1;
+            fetch('http://localhost:8080/follow/follow.html')
+                .then(response => response.text())
+                .then(data => {
+                    phoneContainer.innerHTML = data;
+                    findMyFans();
+                })
+                .catch(error => {
+                    console.error("Error loading HTML: ", error);
+                });
+            break;
+        case 'myVideos':
+            myFavorite = false;
+            searchVideo = false;
+            myFollow = false;
+            myFans = false;
+            currentId = -1;
+            fetch('http://localhost:8080/favorite/favorite.html')
+                .then(response => response.text())
+                .then(data => {
+                    phoneContainer.innerHTML = data;
+                    var myid = getCookie('userId');
+                    findVideoById(myid);
                 })
                 .catch(error => {
                     console.error("Error loading HTML: ", error);
@@ -451,9 +589,11 @@ if (userLoggedIn) {
     dropdownContent.innerHTML = `
         <div class="dropdown-item" onclick="handleMenuItemClick('logout')">退出登录</div>
         <div class="dropdown-item" onclick="handleMenuItemClick('myFavorites')">我的收藏</div>
-        <div class="dropdown-item" onclick="handleMenuItemClick('myFollows')">我的关注</div>
+        <div class="dropdown-item" onclick="handleMenuItemClick('myFollow')">我的关注</div>
         <div class="dropdown-item" onclick="handleMenuItemClick('myFans')">我的粉丝</div>
-        <div class="dropdown-item" onclick="handleMenuItemClick('mutualFollows')">相互关注</div>
+        <div class="dropdown-item" onclick="handleMenuItemClick('search')">搜索视频</div>
+        <div class="dropdown-item" onclick="handleMenuItemClick('myVideos')">我的视频</div>
+        <div class="dropdown-item" onclick="handleMenuItemClick('qiniu')">七牛云</div>
     `;
 } else {
     usernameElement.textContent = '未登录';  // 设置未登录文本
@@ -479,14 +619,6 @@ document.querySelectorAll("nav a").forEach(link => {
     link.addEventListener("click", function() {
         currentCategory = this.innerText;
     });
-});
-document.querySelector('.follow-button').addEventListener('click', function() {
-    if (getCookie('userId')) {
-        var icon = this.querySelector('i');
-        icon.style.color = icon.style.color === 'yellow' ? 'white' : 'yellow';
-    }else {
-        alert("请先登录")
-    }
 });
 
 let player = videojs('my-video');
@@ -537,12 +669,9 @@ function displayFavorites(favorites) {
         videoItem.appendChild(videoDescription);
 
         container.appendChild(videoItem);
-
+        const clientVideoObject = convertToClientVideoObject(favorite);  // 转换视频对象
         // 添加click事件监听器到video-item
-        videoItem.addEventListener('click', () => {
-            const clientVideoObject = convertToClientVideoObject(favorite);  // 转换视频对象
-            playVideo(clientVideoObject);  // 调用playVideo函数播放视频
-        });
+        videoItem.addEventListener('click', () => handleVideoItemClick(clientVideoObject));
     });
 }
 
@@ -563,13 +692,189 @@ function convertToClientVideoObject(serverVideoObject) {
         coverURL: serverVideoObject.coverURL
     };
 }
+function addSearch() {
+    const searchBox = document.getElementById('search-box');
+    const searchBtn = document.getElementById('search-btn');
 
+    // Add event listener for the button click
+    searchBtn.addEventListener('click', searchFunction);
 
+    // Add event listener for the 'Enter' key in the search box
+    searchBox.addEventListener('keypress', function(e) {
+        // Check if the key pressed is 'Enter'
+        if (e.key === 'Enter') {
+            searchFunction();
+        }
+    });
+}
 
+// The actual search function
+function searchFunction() {
+    const query = document.getElementById('search-box').value;
+    console.log("Searching for:", query);
 
+    console.log('函数开始');
+    const userId = getCookie('userId');  // 假设你已经有了获取cookie的函数
+    if (!userId) return;
 
+    fetch(`http://localhost:8080/video/search?keyWords=${query}&userId=${userId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            displayFavorites(data);
+        })
+        .catch(error => {
+            console.error('Error fetching favorites:', error);
+        });
+}
+let isClickable = true;
+function handleVideoItemClick(clientVideoObject) {
+    if (isClickable) {
+        playVideo(clientVideoObject);
+    }
+}
+function disableClickForDuration(duration) {
+    isClickable = false;
+    setTimeout(() => {
+        isClickable = true;
+    }, duration);
+}
 
+function updateButtonVisibility() {
+    if (shouldDisplayButton()) {
+        followbutton.style.display = 'block';  // or 'inline-block' or whatever your preferred display value is
+    } else {
+        followbutton.style.display = 'none';
+    }
+}
 
+function shouldDisplayButton() {
+    let categoryHistory = playHistory[currentCategory] || [];
+    let categoryIndex = currentIndex[currentCategory] || 0;
+    return String(getCookie('userId')) !== String(categoryHistory[categoryIndex].userId);
 
+}
+function findMyFollow() {
+    var userId = getCookie('userId');
+    fetch('/follow/myFollow?userId=' + userId) // 替换为你的API终点
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('myFollow-container');
+            container.innerHTML = '';  // 清空现有内容
+            data.forEach(follower => {
+                const followItem = document.createElement('div');
+                followItem.className = 'follow-item';
 
+                const img = document.createElement('img');
+                img.src = follower.avatar; // 假设avatarUrl是头像的URL
+                followItem.appendChild(img);
+
+                const idText = document.createTextNode(follower.username); // 假设id是关注者的ID
+                followItem.appendChild(idText);
+
+                // 添加点击事件处理器
+                followItem.addEventListener('click', () => {
+                    if (isClickable) {
+                        insertVideosHtml();
+                        findVideoById(follower.id); // 假设id是关注者的ID
+                    }
+                });
+
+                container.appendChild(followItem);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching followers:', error);
+        });
+}
+function findMyFans() {
+    var userId = getCookie('userId');
+    fetch('/follow/myFans?userId=' + userId) // 替换为你的API终点
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('myFollow-container');
+            container.innerHTML = '';  // 清空现有内容
+            data.forEach(follower => {
+                const followItem = document.createElement('div');
+                followItem.className = 'follow-item';
+
+                const img = document.createElement('img');
+                img.src = follower.avatar; // 假设avatarUrl是头像的URL
+                followItem.appendChild(img);
+
+                const idText = document.createTextNode(follower.username); // 假设id是关注者的ID
+                followItem.appendChild(idText);
+
+                // 添加点击事件处理器
+                followItem.addEventListener('click', () => {
+                    if (isClickable) {
+                        insertVideosHtml();
+                        findVideoById(follower.id); // 假设id是关注者的ID
+                    }
+                });
+
+                container.appendChild(followItem);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching followers:', error);
+        });
+}
+let currentId = -1;
+function findVideoById(id) {
+    currentId = id;
+    var myId = getCookie('userId');
+    fetch(`http://localhost:8080/video/findVideoById?id=${id}&myId=${myId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            displayFavorites(data);
+        })
+        .catch(error => {
+            console.error('Error fetching favorites:', error);
+        });
+}
+function insertVideosHtml() {
+    const phoneContainer = document.querySelector('.phone-screen');
+    fetch('http://localhost:8080/favorite/favorite.html')
+        .then(response => response.text())
+        .then(data => {
+            phoneContainer.innerHTML = data;
+        })
+        .catch(error => {
+            console.error("Error loading HTML: ", error);
+        });
+}
+
+function updatePhoneScreenWithNewContent() {
+    const phoneContainer = document.querySelector('.phone-screen');
+    phoneContainer.innerHTML = '';
+    phoneContainer.innerHTML = '<iframe class="no-border" src="http://localhost:8080/qiniu/qiniu.html" height="400" width="200"></iframe>'
+}
+
+// 假设handleUserClick是你希望调用的函数
+function handleUserClick() {
+    let categoryHistory = playHistory[currentCategory] || [];
+    let categoryIndex = currentIndex[currentCategory] || 0;
+    insertVideosHtml();
+    findVideoById(categoryHistory[categoryIndex].userId);
+}
+
+// 获取元素
+var avatarElement = document.getElementById('other-avatar');
+var usernameElement = document.getElementById('other-username');
+
+// 为avatar元素添加点击事件监听器
+avatarElement.addEventListener('click', handleUserClick);
+
+// 为username元素添加点击事件监听器
+usernameElement.addEventListener('click', handleUserClick);
 

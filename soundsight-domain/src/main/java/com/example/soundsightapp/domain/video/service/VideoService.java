@@ -25,4 +25,12 @@ public class VideoService {
     public VideoResponse findVideoByIdAndTypeAndUserId(String videoId, String videoType, String userId) {
         return videoRepository.getVideoByIdAndTypeAndUserId(videoId, videoType, userId);
     }
+
+    public List<VideoResponse> searchVideos(String keyWords, Integer userId) {
+        return videoRepository.searchVideos(keyWords, userId);
+    }
+
+    public List<VideoResponse> findVideoByIdAndUserId(String id, String myId) {
+        return videoRepository.findVideoByIdAndUserId(id, myId);
+    }
 }

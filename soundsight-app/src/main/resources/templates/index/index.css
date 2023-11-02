@@ -291,5 +291,10 @@ button:focus {
 
 /* 其他样式 */
 
+#other-avatar:hover, #other-username:hover {
+    cursor: pointer; /* 显示一个指示元素可点击的光标 */
+}
+
+
 
 

@@ -5,6 +5,8 @@ import com.example.soundsight.type.VideoResponseBuilder;
 import com.example.soundsight.type.VideoURLHelper;
 import com.example.soundsightapp.infrastructpure.mysql.dao.*;
 import com.example.soundsightapp.infrastructpure.mysql.po.*;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.rest.RestHandler;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.annotation.Resource;
@@ -18,10 +20,12 @@ public abstract class BaseVideoRepository {
 
     @Resource
     protected StringRedisTemplate stringRedisTemplate;
+
+    @Resource
+    protected RestHighLevelClient restHighLevelClient;
     protected UserDao userDao;
     protected HotVideoDao hotVideoDao;
     protected FavoriteDao favoriteDao;
-    protected FollowDao followDao;
     protected UserVideoDao userVideoDao;
 
     protected final Map<String, VideoDao> videoDaos = new HashMap<>();
@@ -98,7 +102,7 @@ public abstract class BaseVideoRepository {
         String videoUrl = VideoURLHelper.getVideoUrl(type, videoId);
         String coverURL = VideoURLHelper.getCoverUrl(type, video.getId());
         Boolean isLiked = stringRedisTemplate.opsForSet().isMember(type + video.getId() + ":video:like", String.valueOf(userId));
-        Boolean isFollowed = followDao.count(userId, userVideo.getUserId()) > 0 ? true : false;
+        Boolean isFollowed = stringRedisTemplate.opsForSet().isMember("following:" + userId, userVideo.getUserId().toString());
         return new VideoResponseBuilder().coverURL(coverURL).videoURL(videoUrl).videoId(videoId).liked(isLiked)
                 .favorite(count > 0 ? true : false).userId(userVideo.getUserId()).username(userVideo.getUsername())
                 .avatar(url).likeCount(video.getLike()).favoriteCount(video.getFavorite())
