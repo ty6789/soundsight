@@ -58,7 +58,7 @@ public class UserRepository implements IUserRepository {
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            String url = "http://localhost:8080/photo/" + user.getAvatarCode() + ".png";
+            String url = "http://soundsight.ty666.cool/photo/" + user.getAvatarCode() + ".png";
             LoginResponse response = new LoginResponse( "登录成功",user.getId(), user.getUserName(), url);
             return ResponseEntity.ok(response);
         } else {

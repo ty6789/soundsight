@@ -27,7 +27,7 @@
             preferences: selectedPreferences
         };
         console.log(registrationData);
-        fetch('http://localhost:8080/user/register', {
+        fetch('http://soundsight.ty666.cool/user/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -93,7 +93,7 @@
 
     function updatePhoneScreenWithNewContent() {
         const phoneContainer = document.querySelector('.phone-screen');
-        phoneContainer.innerHTML = '<iframe class="no-border" src="http://localhost:8080/qiniu/qiniu.html" height="400" width="200"></iframe>'
+        phoneContainer.innerHTML = '<iframe class="no-border" src="http://soundsight.ty666.cool/qiniu/qiniu.html" height="400" width="200"></iframe>'
     }
 
 

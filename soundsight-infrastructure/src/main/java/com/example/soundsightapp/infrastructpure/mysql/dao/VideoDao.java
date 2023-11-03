@@ -1,6 +1,7 @@
 package com.example.soundsightapp.infrastructpure.mysql.dao;
 
 import com.example.soundsightapp.infrastructpure.mysql.po.Video;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
