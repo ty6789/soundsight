@@ -4,10 +4,8 @@
 #### 知名up主: name:ty pwd : ty
 #### 活跃账号: name:七牛云 pwd: 123456
 ## 如何运行项目
-
-
 ### 克隆项目到本地
-git clone --recursive [https://github.com/ty6789/soundsight]
+git clone [https://github.com/ty6789/soundsight]
 
 ### 启动项目
 
