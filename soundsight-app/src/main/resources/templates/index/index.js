@@ -22,6 +22,7 @@ let myFavorite = false;
 let myFollow = false;
 let myFans = false;
 let searchVideo = false;
+<<<<<<< HEAD
 let curVideos = [];
 let curSearchVideos = [];
 let curFavoriteVideos = [];
@@ -32,6 +33,15 @@ function freshAll() {
         console.log(videoData);
         hasRunOnce = true;  // 更新全局变量，标记freshAll已经运行过
         playVideo(JSON.parse(videoData));
+=======
+let myVideos = false;
+let curVideos = [];
+function freshAll() {
+    if (!hasRunOnce && videoData && Object.keys(videoData).length !== 0) {
+        console.log(videoData);
+        hasRunOnce = true;  // 更新全局变量，标记freshAll已经运行过
+        playVideo(convertToClientVideoObject(JSON.parse(videoData)));
+>>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
         return;
     }
     var id = getCookie('userId');
@@ -51,7 +61,24 @@ function freshAll() {
                 console.log(data[0].isLiked);
                 console.log(data[0].isFollowed);
                 console.log(data[0]);
+<<<<<<< HEAD
                 videoQueue = data;
+=======
+                videoQueue = data.map(videoResponse => ({
+                    id: videoResponse.videoId,
+                    url: videoResponse.videoURL,
+                    type: videoResponse.videoType,
+                    isLiked: videoResponse.isLiked,
+                    userId: videoResponse.userId,
+                    username: videoResponse.username,
+                    avatar: videoResponse.avatar,
+                    likeCount: videoResponse.likeCount,
+                    favoriteCount: videoResponse.favoriteCount,
+                    isFollowed: videoResponse.isFollowed,
+                    isFavorite: videoResponse.isFavorite,
+                    descr: videoResponse.descr
+                }));
+>>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
                 if (videoQueue.length > 0) {
                     playVideo(videoQueue.shift());
                 }
@@ -124,12 +151,17 @@ function toggleFavorite() {
     console.log(isFavorited);
     updateFavoriteStatus();
     updateFavoriteCount();
+<<<<<<< HEAD
     disableClickForDuration(1000);
+=======
+    disableClickForDuration(3000);
+>>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
     const method = isFavorited ? 'POST' : 'DELETE';
     const userId = getCookie('userId');  // 获取用户ID
     console.log(userId);
     let categoryHistory = playHistory[currentCategory] || [];
     let categoryIndex = currentIndex[currentCategory] || 0;
+<<<<<<< HEAD
     categoryHistory[categoryIndex].isFavorite = isFavorited;
     const itemId = categoryHistory[categoryIndex].id;  // 获取被收藏项的ID
     const itemType = categoryHistory[categoryIndex].type;
@@ -143,6 +175,13 @@ function toggleFavorite() {
             curFavoriteVideos.splice(indexToRemove, 1);
         }
     }
+=======
+    console.log(categoryIndex);
+    const itemId = categoryHistory[categoryIndex].id;  // 获取被收藏项的ID
+    const itemType = categoryHistory[categoryIndex].type;
+    console.log(categoryHistory[categoryIndex]);
+    categoryHistory[categoryIndex].isFavorite = isFavorited;
+>>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
     fetch('/favorite', {
         method: method,
         headers: {
@@ -151,9 +190,15 @@ function toggleFavorite() {
         body: JSON.stringify({userId, itemId, itemType}),
     }).then( ()=>{
         if (myFavorite) {
+<<<<<<< HEAD
             displayFavorites(curFavoriteVideos);
         }else if (searchVideo) {
             freshSearchVideos();
+=======
+            fetchFavorites();
+        }else if (searchVideo) {
+            searchFunction();
+>>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
         }else if (currentId !== -1) {
             freshCurIdVideos();
         }
@@ -168,7 +213,11 @@ function toggleLike() {
     console.log(isLiked);
     updateLikedStatus();
     updateLikedCount();
+<<<<<<< HEAD
     disableClickForDuration(1000);
+=======
+    disableClickForDuration(3000);
+>>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
     const method = isLiked ? 'POST' : 'DELETE';
     const userId = getCookie('userId');  // 获取用户ID
     console.log(userId);
@@ -187,9 +236,15 @@ function toggleLike() {
         body: JSON.stringify({userId, itemId, itemType}),
     }).then( ()=>{
         if (myFavorite) {
+<<<<<<< HEAD
             freshFavoriteVideos();
         }else if (searchVideo) {
             freshSearchVideos();
+=======
+            fetchFavorites();
+        }else if (searchVideo) {
+            searchFunction();
+>>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
         }else if (currentId !== -1) {
             freshCurIdVideos();
         }
@@ -201,6 +256,7 @@ async function shareVideo() {
     var videoId = categoryHistory[categoryIndex].id;
     var videoType = categoryHistory[categoryIndex].type;
     var videoUrl = "http://soundsight.ty666.cool/?videoId=" + videoId + "&videoType=" + videoType;
+<<<<<<< HEAD
 // 检查navigator.clipboard是否可用以及是否在安全上下文中
     if (navigator.clipboard && window.isSecureContext) {
         // 尝试使用Clipboard API
@@ -240,6 +296,14 @@ async function shareVideo() {
         }
     }
 
+=======
+    try {
+        await navigator.clipboard.writeText(videoUrl);  // Copy the video URL to the clipboard
+        alert('已复制视频链接');
+    } catch (err) {
+        console.error('Error in copying text: ', err);
+    }
+>>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
 }
 function toggleFollow() {
     if (!getCookie('userId')){
@@ -250,7 +314,11 @@ function toggleFollow() {
     console.log(isFollowed);
     updateFollowStatus();
     updateFollowText();
+<<<<<<< HEAD
     disableClickForDuration(1000);
+=======
+    disableClickForDuration(3000);
+>>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
     const method = isFollowed ? 'POST' : 'DELETE';
     const userId = getCookie('userId');  // 获取用户ID
     console.log(userId);
@@ -268,9 +336,15 @@ function toggleFollow() {
         body: JSON.stringify({userId, followed}),
     }).then( ()=>{
         if (myFavorite) {
+<<<<<<< HEAD
             freshFavoriteVideos();
         }else if (searchVideo) {
             freshSearchVideos();
+=======
+            fetchFavorites();
+        }else if (searchVideo) {
+            searchFunction();
+>>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
         }else if (myFollow) {
             findMyFollow();
         }else if (currentId !== -1) {
@@ -356,7 +430,24 @@ function fetchVideosFromBackend() {
             console.log("Received data from backend:", data);
 
             // 将后端返回的视频数据转换为视频对象数组
+<<<<<<< HEAD
             videoQueue = data;
+=======
+            videoQueue = data.map(videoResponse => ({
+                id: videoResponse.videoId,
+                url: videoResponse.videoURL,
+                type: videoResponse.videoType,
+                isLiked: videoResponse.isLiked,  // 初始状态，可以根据后端数据来设置
+                isFavorite: videoResponse.isFavorite,
+                isFollowed: videoResponse.isFollowed,
+                userId: videoResponse.userId,
+                username: videoResponse.username,
+                avatar: videoResponse.avatar,
+                likeCount: videoResponse.likeCount,
+                favoriteCount: videoResponse.favoriteCount,
+                descr: videoResponse.descr
+            }));
+>>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
             // 播放第一个视频
             const firstVideo = videoQueue.shift();
             console.log(firstVideo);
@@ -484,7 +575,11 @@ function handleMenuItemClick(action) {
                 .then(response => response.text())
                 .then(data => {
                     phoneContainer.innerHTML = data;
+<<<<<<< HEAD
                     displayFavorites(curFavoriteVideos);
+=======
+                    fetchFavorites();
+>>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
                 })
                 .catch(error => {
                     console.error("Error loading HTML: ", error);
@@ -659,13 +754,21 @@ function fetchFavorites() {
             return response.json();
         })
         .then(data => {
+<<<<<<< HEAD
             curFavoriteVideos = data;
+=======
+            displayFavorites(data);
+>>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
         })
         .catch(error => {
             console.error('Error fetching favorites:', error);
         });
 }
+<<<<<<< HEAD
 function    displayFavorites(favorites) {
+=======
+function displayFavorites(favorites) {
+>>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
     const container = document.getElementById('favorites-container');
     container.innerHTML = '';  // 清空现有内容
 
@@ -688,10 +791,36 @@ function    displayFavorites(favorites) {
         videoItem.appendChild(videoDescription);
 
         container.appendChild(videoItem);
+<<<<<<< HEAD
         // 添加click事件监听器到video-item
         videoItem.addEventListener('click', () => handleVideoItemClick(favorite));
     });
 }
+=======
+        const clientVideoObject = convertToClientVideoObject(favorite);  // 转换视频对象
+        // 添加click事件监听器到video-item
+        videoItem.addEventListener('click', () => handleVideoItemClick(clientVideoObject));
+    });
+}
+
+function convertToClientVideoObject(serverVideoObject) {
+    return {
+        id: serverVideoObject.videoId,
+        url: serverVideoObject.videoURL,
+        type: serverVideoObject.videoType,
+        isLiked: serverVideoObject.isLiked,  // 初始状态，可以根据后端数据来设置
+        isFavorite: serverVideoObject.isFavorite,
+        isFollowed: serverVideoObject.isFollowed,
+        userId: serverVideoObject.userId,
+        username: serverVideoObject.username,
+        avatar: serverVideoObject.avatar,
+        likeCount: serverVideoObject.likeCount,
+        favoriteCount: serverVideoObject.favoriteCount,
+        descr: serverVideoObject.descr,
+        coverURL: serverVideoObject.coverURL
+    };
+}
+>>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
 function addSearch() {
     const searchBox = document.getElementById('search-box');
     const searchBtn = document.getElementById('search-btn');
@@ -725,7 +854,10 @@ function searchFunction() {
             return response.json();
         })
         .then(data => {
+<<<<<<< HEAD
             curSearchVideos = data;
+=======
+>>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
             displayFavorites(data);
         })
         .catch(error => {
@@ -827,10 +959,29 @@ function findMyFans() {
 }
 let currentId = -1;
 function findVideoById(id) {
+<<<<<<< HEAD
     currentPage = 0;
     curVideos = [];
     currentId = id;
     loadMoreVideos(id);
+=======
+    currentId = id;
+    var myId = getCookie('userId');
+    fetch(`http://soundsight.ty666.cool/video/findVideoById?id=${id}&myId=${myId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            curVideos = data;
+            displayFavorites(data);
+        })
+        .catch(error => {
+            console.error('Error fetching favorites:', error);
+        });
+>>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
 }
 function insertVideosHtml() {
     const phoneContainer = document.querySelector('.phone-screen');
@@ -872,11 +1023,16 @@ function freshCurIdVideos() {
     let categoryIndex = currentIndex[currentCategory] || 0;
     var targetId = categoryHistory[categoryIndex].id;
     var targetType = categoryHistory[categoryIndex].type;
+<<<<<<< HEAD
     let foundVideo = curVideos.find(video => video.id === targetId && video.type === targetType);
+=======
+    let foundVideo = curVideos.find(video => video.videoId === targetId && video.videoType === targetType);
+>>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
     if (foundVideo) {
         foundVideo.isFavorite = categoryHistory[categoryIndex].isFavorite;
         foundVideo.isLiked = categoryHistory[categoryIndex].isLiked;
         foundVideo.isFollowed = categoryHistory[categoryIndex].isFollowed;
+<<<<<<< HEAD
         foundVideo.likeCount = categoryHistory[categoryIndex].likeCount;
         foundVideo.favoriteCount = categoryHistory[categoryIndex].favoriteCount;
     }
@@ -987,3 +1143,8 @@ phoneScreen.addEventListener('scroll', () => {
 });
 
 
+=======
+    }
+    displayFavorites(curVideos);
+}
+>>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041

@@ -14,8 +14,13 @@
     <delete id="delFavorite">
         delete from favorite where user_id = #{userId} and video_id = #{itemId} and video_type = #{itemType}
     </delete>
+<<<<<<< HEAD
     <select id="count" resultType="java.lang.Boolean">
         select 1 from favorite where user_id = #{userId} and video_id = #{itemId} and video_type = #{itemType} limit 1
+=======
+    <select id="count" resultType="java.lang.Integer">
+        select count(*) from favorite where user_id = #{userId} and video_id = #{itemId} and video_type = #{itemType}
+>>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
     </select>
     <select id="getUserVideoByUserId"
             resultType="com.example.soundsightapp.infrastructpure.mysql.po.Favorite" resultMap="favoriteMap">

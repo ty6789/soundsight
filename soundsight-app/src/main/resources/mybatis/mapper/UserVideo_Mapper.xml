@@ -13,9 +13,14 @@
     <select id="selectByVideoIdAndType" resultType="com.example.soundsightapp.infrastructpure.mysql.po.UserVideo" resultMap="userMap">
         select * from user_video where video_id = #{videoId} and video_type = #{type}
     </select>
+<<<<<<< HEAD
     <select id="getUserVideoByUserId" resultType="com.example.soundsightapp.infrastructpure.mysql.po.UserVideo" resultMap="userMap">
         select * from user_video where userId = #{id}
             LIMIT #{size} OFFSET #{offset}
+=======
+    <select id="findVideosByUserId" resultType="com.example.soundsightapp.infrastructpure.mysql.po.UserVideo" resultMap="userMap">
+        select * from user_video where userId = #{id}
+>>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
     </select>
 
 </mapper>
