@@ -1,0 +1,300 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: black;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    box-sizing: border-box;
+}
+nav {
+    width: 100%;
+    background-color: #333;
+    overflow: visible;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2%; /* Add padding to the left and right */
+}
+nav ul {
+    list-style-type: none;
+    margin: 0 0 0 5%; /* Add margin-left of 10% */
+    padding: 0;
+    display: flex;
+}
+nav li {
+    margin: 0;
+    padding: 15px 20px;
+}
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+#videoContainer {
+    margin-left: 20px;
+    margin-right: 10px;
+    margin-bottom: 80px;
+    margin-top: 10px;
+    width: 1000px; /* Set the same width as the video element */
+    height: 580px; /* Set the same height as the video element */
+    border: 4px solid #ddd; /* Set border style */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+/* Additional CSS to reset video element padding and margin */
+.video-js .vjs-big-play-button {
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    margin: 0 !important;
+}
+#navigation {
+    display: flex;
+    justify-content: center;
+    margin-top: 18px;  /* Adjust as needed */
+}
+
+.nav-button {
+    background-color: #333;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 0 40px;
+    cursor: pointer;
+    border-radius: 12px;  /* Optional: for rounded corners */
+}
+.user-info {
+    display: flex;
+    align-items: center; /* 使子元素垂直居中 */
+}
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    background-color: #ccc;  /* 临时的背景色，以便您可以看到div的大小 */
+    margin: auto;
+}
+
+.user-info:hover .dropdown {
+    display: block;
+}
+
+.dropdown-item {
+    padding: 12px 16px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #ddd;
+}
+.user-avatar{
+    margin-left: 450px;
+    margin-right: 0px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+#username:hover + .dropdown {
+    display: block;
+}
+
+
+.dropdown {
+    position: relative;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    margin: auto;
+    margin-right: 50px;
+    padding-bottom: 20px; /* 调整该值以增大dropdown的底部大小 */
+}
+
+.selected, .arrow {
+    display: inline-block;
+}
+.selected {
+    display: flex; /* 使用 flex 布局 */
+    align-items: center; /* 垂直居中 */
+    margin-right: 5px; /* 添加一些右侧间距 */
+    color: white;
+}
+
+
+.arrow {
+    display: inline-block;
+    position: relative;
+    margin: auto;
+    transition: transform 0.5s ease;
+    transform: rotate(0deg);  /* 确保箭头的初始状态为未旋转 */
+    color: white;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: gray;
+    min-width: 89px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border: 1px solid #e1e1e1;
+    margin-top: 20px;
+    margin-right: 200px;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropdown-header img{
+    transform: rotate(180deg);
+}
+
+.dropdown .arrow.arrow-rotate {
+    transform: rotate(180deg);
+}
+.dropdown-header {
+    margin-top: 18px;
+    display: flex; /* 使用 flex 布局 */
+    align-items: center; /* 垂直居中 */
+}
+.phone-mockup {
+    width: 350px;
+    height: 500px;
+    background-color: #000;
+    border: 4px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 28px;
+    margin-left: 40px;
+    margin-right: 50px;
+    margin-bottom: 0px;
+    display: flex;
+    flex-direction: column;
+}
+
+.phone-header,
+.phone-footer {
+    height: 30px;
+    background-color: #333;
+    border-radius: 18px 18px 0 0;
+}
+
+.phone-footer {
+    border-radius: 0 0 18px 18px;
+}
+
+.phone-screen {
+    height: 580px;
+    flex-grow: 1;
+    background-color: black;
+    overflow-y: auto;  /* 添加垂直滚动 */
+    padding: 10px;    /* 添加一些内边距 */
+}
+
+
+.content-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.no-border {
+    border: none;
+    margin-left: 12%;
+    margin-top: 10%;
+}
+
+.like-button, .share-button {
+    font-size: 16px;
+    padding: 10px;
+    border: none;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+
+/* 对图标进行样式化 */
+.like-button i, .share-button i {
+    margin-right: 5px;
+}
+
+.favorite-button, .follow-button {
+    font-size: 16px;
+    padding: 10px;
+    border: none;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+
+/* 对图标进行样式化 */
+.favorite-button i, .follow-button i {
+    margin-right: 5px;
+}
+
+.other-user-avatar {
+    width: 50px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color: #ccc;  /* 临时的背景色，以便您可以看到div的大小 */
+}
+#other-username{
+    color: white;
+    margin: auto;
+    margin-left: 0;
+    margin-right: 0;
+}
+#category-list .active {
+    color: green;
+}
+.other-user-avatar{
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+/* 新的包装器 div 的样式 */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* 居中对齐 */
+}
+
+.comment-box {
+    width: 300px;  /* 或者其他你想要的宽度 */
+    height: 130px;
+    border: 1px solid #ccc;  /* 灰色边框 */
+    margin-bottom: 10px;  /* 与手机头部的间距 */
+    margin-right: 10px;
+    overflow-y: auto;  /* 如果评论很多，将出现垂直滚动条 */
+    color: white;
+}
+
+/* 在你的CSS文件中添加这段代码 */
+button:focus {
+    outline: none;
+}
+
+/* 其他样式 */
+
+#other-avatar:hover, #other-username:hover {
+    cursor: pointer; /* 显示一个指示元素可点击的光标 */
+}
+
+
+
+

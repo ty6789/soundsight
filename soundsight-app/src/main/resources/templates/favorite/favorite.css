@@ -1,0 +1,21 @@
+.video-item {
+    display: flex;
+    align-items: center;  /* 这个属性会使所有子元素在交叉轴上居中对齐 */
+    margin-bottom: 20px;
+    cursor: pointer;  /* 这个属性会在鼠标悬停时显示一个指示性的手指图标 */
+}
+
+
+.video-frame img {
+    width: 80px;
+    height: 80px;
+}
+
+.video-description {
+    margin-left: 10px;
+}
+
+.video-description p {
+    font-size: 14px;
+    color: white;
+}

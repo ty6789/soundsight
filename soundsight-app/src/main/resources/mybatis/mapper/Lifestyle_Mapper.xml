@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.soundsightapp.infrastructpure.mysql.dao.LifestyleDao">
+
+    <resultMap id="sportsVideoMap" type="com.example.soundsightapp.infrastructpure.mysql.po.Video">
+        <id column="id" property="id"/>
+        <result column="desc" property="desc"/>
+        <result column="like" property="like"/>
+        <result column="favorite" property="favorite"/>
+        <result column="isHot" property="isHot"/>
+        <result column="type" property="type"/>
+    </resultMap>
+
+    <select id="getVideos" resultType="com.example.soundsightapp.infrastructpure.mysql.po.Video" resultMap="sportsVideoMap">
+        SELECT *
+        FROM lifestyle_video
+        where id >= #{lastIndex}
+            limit 2
+    </select>
+
+    <select id="getVideoById" resultType="com.example.soundsightapp.infrastructpure.mysql.po.Video" resultMap="sportsVideoMap">
+        SELECT *
+        FROM lifestyle_video
+        where id = #{userId}
+    </select>
+
+    <select id="findHotVideos" resultType="com.example.soundsightapp.infrastructpure.mysql.po.Video" resultMap="sportsVideoMap">
+        select *
+        from lifestyle_video
+        where `like` + favorite >= 3000 and isHot = 0
+    </select>
+
+    <update id="addFavorite" parameterType="int">
+        update lifestyle_video set favorite = favorite + 1
+        where id = #{itemId}
+    </update>
+    <update id="delFavorite" parameterType="int">
+        update lifestyle_video set favorite = favorite - 1
+        where id = #{itemId}
+    </update>
+
+    <update id="addLike" parameterType="int">
+        update lifestyle_video set `like` = `like` + 1
+        where id = #{itemId}
+    </update>
+
+    <update id="delLike" parameterType="int">
+        update lifestyle_video set `like` = `like` - 1
+        where id = #{itemId}
+    </update>
+
+    <update id="batchUpdateIsHot">
+        UPDATE lifestyle_video
+        SET isHot = 1
+        WHERE id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </update>
+
+</mapper>

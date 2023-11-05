@@ -1,0 +1,106 @@
+body {
+    font-family: Arial, sans-serif;
+    color: white;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.registration-container {
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 200px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+button:hover {
+    background-color: #0056b3;
+}
+.avatar-scroll-container {
+    display: flex;  /* 使用flex布局使头像排成一行 */
+    overflow-x: auto;  /* 如果头像超过容器宽度，显示横向滚动条 */
+    white-space: nowrap;  /* 防止内容换行 */
+    width: 300px;  /* 根据需要设置固定宽度 */
+}
+
+.avatar-item {
+    flex: 0 0 80px;  /* 每个头像的宽度为80px，不允许它们缩放或增长 */
+    margin-right: 10px;  /* 头像之间的间距 */
+
+    /* 如果您希望头像是点击选中的，还可以添加下面的样式 */
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.avatar-item:hover {
+    transform: scale(1.1);  /* 鼠标悬停时稍微放大头像 */
+}
+
+.avatar-item img {
+    width: 100%;  /* 使图片完全填充其容器 */
+}
+
+/* 只为选中的头像添加边框 */
+.avatar-item.selected {
+    border: 2px solid blue; /* 蓝色边框表示选中状态 */
+    box-sizing: border-box; /* 保持头像的尺寸 */
+}
+
+.preferences-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 这会创建三列的网格，你可以根据需要调整 */
+    gap: 10px; /* 调整为你需要的间距 */
+}
+
+.preference-item {
+    cursor: pointer;
+}
+
+.preference-item img {
+    width: 100%;
+    height: auto;
+}
+
+.preference-item.selected {
+    color: green; /* 设置选中状态下的字体颜色为绿色 */
+    cursor: pointer;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Special+Font&display=swap'); /* 你可以替换这里的URL为你选择的字体 */
+
+.artistic-text {
+    font-family: 'Special Font', cursive; /* 使用你选择的字体 */
+    font-size: 24px;
+    text-align: center;
+    line-height: 1.5;
+}
+
+
+
+
+

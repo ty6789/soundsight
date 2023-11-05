@@ -1,0 +1,8 @@
+
+.font-effect-artistic-text {
+    font-family: 'Special Font', cursive; /* 使用你选择的字体 */
+    font-size: 100px;
+    text-align: center;
+    margin-left: 30%;
+    color: #007BFF;
+}
