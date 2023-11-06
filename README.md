@@ -3,6 +3,7 @@
 ### 也可以使用如下账号：
 #### 知名up主: name:ty pwd : ty
 #### 活跃账号: name:七牛云 pwd: 123456
+## 项目介绍视频:https://url.v.tencent.com/164g4OZK （因为文件太大，所以以在线视频形式分享）
 ## 如何运行项目
 ### 克隆项目到本地
 git clone [https://github.com/ty6789/soundsight]
