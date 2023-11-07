@@ -150,6 +150,7 @@ function toggleFavorite() {
         },
         body: JSON.stringify({userId, itemId, itemType}),
     }).then( ()=>{
+        freshHistory();
         if (myFavorite) {
             displayFavorites(curFavoriteVideos);
         }else if (searchVideo) {
@@ -186,9 +187,9 @@ function toggleLike() {
         },
         body: JSON.stringify({userId, itemId, itemType}),
     }).then( ()=>{
-        if (myFavorite) {
-            freshFavoriteVideos();
-        }else if (searchVideo) {
+        freshHistory();
+        freshFavoriteVideos();
+        if (searchVideo) {
             freshSearchVideos();
         }else if (currentId !== -1) {
             freshCurIdVideos();
@@ -267,9 +268,9 @@ function toggleFollow() {
         },
         body: JSON.stringify({userId, followed}),
     }).then( ()=>{
-        if (myFavorite) {
-            freshFavoriteVideos();
-        }else if (searchVideo) {
+        freshHistory();
+        freshFavoriteVideos();
+        if (searchVideo) {
             freshSearchVideos();
         }else if (myFollow) {
             findMyFollow();
@@ -640,7 +641,7 @@ document.querySelectorAll("nav a").forEach(link => {
     });
 });
 
-let player = videojs('my-video');
+var player = videojs('my-video');
 player.volume(0.3);
 player.on('ended', function() {
     playNextVideo();
@@ -985,5 +986,20 @@ phoneScreen.addEventListener('scroll', () => {
         loadMoreVideos(currentId);
     }
 });
+function freshHistory() {
+    let categoryHistory = playHistory[currentCategory] || [];
+    let categoryIndex = currentIndex[currentCategory] || 0;
+    var targetId = categoryHistory[categoryIndex].id;
+    var targetType = categoryHistory[categoryIndex].type;
+    let foundVideos = categoryHistory.filter(video => video.id === targetId && video.type === targetType);
+    foundVideos.forEach(foundVideo => {
+        foundVideo.isFavorite = categoryHistory[categoryIndex].isFavorite;
+        foundVideo.isLiked = categoryHistory[categoryIndex].isLiked;
+        foundVideo.isFollowed = categoryHistory[categoryIndex].isFollowed;
+        foundVideo.likeCount = categoryHistory[categoryIndex].likeCount;
+        foundVideo.favoriteCount = categoryHistory[categoryIndex].favoriteCount;
+    });
+
+}
 
 
