@@ -1,12 +1,6 @@
 body {
     font-family: Arial, sans-serif;
     color: white;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
 }
 .registration-container {
     padding: 20px;

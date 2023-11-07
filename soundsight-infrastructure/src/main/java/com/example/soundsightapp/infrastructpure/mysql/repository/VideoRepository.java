@@ -5,14 +5,7 @@ import com.alibaba.fastjson2.JSON;
 import com.example.soundsight.type.VideoResponse;
 import com.example.soundsightapp.domain.video.repository.IVideoRepository;
 import com.example.soundsightapp.infrastructpure.mysql.dao.*;
-<<<<<<< HEAD
 import com.example.soundsightapp.infrastructpure.mysql.po.*;
-=======
-import com.example.soundsightapp.infrastructpure.mysql.po.Favorite;
-import com.example.soundsightapp.infrastructpure.mysql.po.HotVideo;
-import com.example.soundsightapp.infrastructpure.mysql.po.UserVideo;
-import com.example.soundsightapp.infrastructpure.mysql.po.Video;
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.SearchHit;
@@ -157,7 +150,6 @@ public class VideoRepository extends BaseVideoRepository implements IVideoReposi
     }
 
     @Override
-<<<<<<< HEAD
     public List<VideoResponse> findVideoByIdAndUserId(String id, String myId, Integer page, Integer size) {
         List<UserVideo> userVideos = userVideoDao.getUserVideoByUserId(id, page * size, size);
         List<VideoResponse> res = new ArrayList<>();
@@ -165,16 +157,6 @@ public class VideoRepository extends BaseVideoRepository implements IVideoReposi
             VideoDao videoDao = videoDaos.get(userVideo.getVideoType());
             Video video = videoDao.getVideoById(userVideo.getVideoId());
             res.add(createVideoResponse(video, Integer.parseInt(myId), userVideo.getVideoType()));
-=======
-    public List<VideoResponse> findVideoByIdAndUserId(String id, String myId) {
-        List<UserVideo> userVideos = userVideoDao.findVideosByUserId(id);
-        List<VideoResponse> res = new ArrayList<>();
-        for (UserVideo userVideo : userVideos) {
-            String type = userVideo.getVideoType();
-            VideoDao videoDao = videoDaos.get(type);
-            Video video = videoDao.getVideoById(userVideo.getVideoId());
-            res.add(createVideoResponse(video, Integer.parseInt(myId), type));
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
         }
         return res;
     }

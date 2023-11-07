@@ -4,7 +4,7 @@ package com.example.soundsight.type;
 public class VideoURLHelper {
 
     public static String getAvatarUrl(String avatar) {
-        return "http://soundsight.ty666.cool/photo/" + avatar + ".png";
+        return "http://124.221.174.197/photo/" + avatar + ".png";
     }
 
     public static String getVideoUrl(String type, Integer videoId) {

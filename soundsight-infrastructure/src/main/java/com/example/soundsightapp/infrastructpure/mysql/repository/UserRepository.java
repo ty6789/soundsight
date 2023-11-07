@@ -3,10 +3,7 @@ package com.example.soundsightapp.infrastructpure.mysql.repository;
 import com.example.soundsight.type.LoginRequest;
 import com.example.soundsight.type.LoginResponse;
 import com.example.soundsight.type.RegistrationRequest;
-<<<<<<< HEAD
 import com.example.soundsight.type.VideoURLHelper;
-=======
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
 import com.example.soundsightapp.domain.user.repository.IUserRepository;
 import com.example.soundsightapp.infrastructpure.mysql.dao.UserDao;
 import com.example.soundsightapp.infrastructpure.mysql.po.User;
@@ -62,11 +59,7 @@ public class UserRepository implements IUserRepository {
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-<<<<<<< HEAD
             String url = VideoURLHelper.getAvatarUrl(user.getAvatarCode().toString());
-=======
-            String url = "http://soundsight.ty666.cool/photo/" + user.getAvatarCode() + ".png";
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
             LoginResponse response = new LoginResponse( "登录成功",user.getId(), user.getUserName(), url);
             return ResponseEntity.ok(response);
         } else {

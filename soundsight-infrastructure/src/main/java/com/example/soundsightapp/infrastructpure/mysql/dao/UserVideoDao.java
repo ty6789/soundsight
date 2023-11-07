@@ -11,9 +11,5 @@ import java.util.List;
 public interface UserVideoDao {
     UserVideo selectByVideoIdAndType(@Param("videoId") Integer videoId, @Param("type") String type);
 
-<<<<<<< HEAD
     List<UserVideo> getUserVideoByUserId(@Param("id") String id, @Param("offset") Integer offset, @Param("size") Integer size);
-=======
-    List<UserVideo> findVideosByUserId(String id);
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
 }

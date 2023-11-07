@@ -22,7 +22,6 @@ let myFavorite = false;
 let myFollow = false;
 let myFans = false;
 let searchVideo = false;
-<<<<<<< HEAD
 let curVideos = [];
 let curSearchVideos = [];
 let curFavoriteVideos = [];
@@ -33,20 +32,11 @@ function freshAll() {
         console.log(videoData);
         hasRunOnce = true;  // 更新全局变量，标记freshAll已经运行过
         playVideo(JSON.parse(videoData));
-=======
-let myVideos = false;
-let curVideos = [];
-function freshAll() {
-    if (!hasRunOnce && videoData && Object.keys(videoData).length !== 0) {
-        console.log(videoData);
-        hasRunOnce = true;  // 更新全局变量，标记freshAll已经运行过
-        playVideo(convertToClientVideoObject(JSON.parse(videoData)));
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
         return;
     }
     var id = getCookie('userId');
     if (!id) id = -1;
-    const apiUrl = `http://soundsight.ty666.cool/video/getVideoURL?userId=`+ `${id}`+` &category=${currentCategory}`;
+    const apiUrl = `http://124.221.174.197/video/getVideoURL?userId=`+ `${id}`+` &category=${currentCategory}`;
     fetch(apiUrl, {
         method: 'GET',
     })
@@ -61,24 +51,7 @@ function freshAll() {
                 console.log(data[0].isLiked);
                 console.log(data[0].isFollowed);
                 console.log(data[0]);
-<<<<<<< HEAD
                 videoQueue = data;
-=======
-                videoQueue = data.map(videoResponse => ({
-                    id: videoResponse.videoId,
-                    url: videoResponse.videoURL,
-                    type: videoResponse.videoType,
-                    isLiked: videoResponse.isLiked,
-                    userId: videoResponse.userId,
-                    username: videoResponse.username,
-                    avatar: videoResponse.avatar,
-                    likeCount: videoResponse.likeCount,
-                    favoriteCount: videoResponse.favoriteCount,
-                    isFollowed: videoResponse.isFollowed,
-                    isFavorite: videoResponse.isFavorite,
-                    descr: videoResponse.descr
-                }));
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
                 if (videoQueue.length > 0) {
                     playVideo(videoQueue.shift());
                 }
@@ -151,17 +124,12 @@ function toggleFavorite() {
     console.log(isFavorited);
     updateFavoriteStatus();
     updateFavoriteCount();
-<<<<<<< HEAD
     disableClickForDuration(1000);
-=======
-    disableClickForDuration(3000);
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
     const method = isFavorited ? 'POST' : 'DELETE';
     const userId = getCookie('userId');  // 获取用户ID
     console.log(userId);
     let categoryHistory = playHistory[currentCategory] || [];
     let categoryIndex = currentIndex[currentCategory] || 0;
-<<<<<<< HEAD
     categoryHistory[categoryIndex].isFavorite = isFavorited;
     const itemId = categoryHistory[categoryIndex].id;  // 获取被收藏项的ID
     const itemType = categoryHistory[categoryIndex].type;
@@ -175,13 +143,6 @@ function toggleFavorite() {
             curFavoriteVideos.splice(indexToRemove, 1);
         }
     }
-=======
-    console.log(categoryIndex);
-    const itemId = categoryHistory[categoryIndex].id;  // 获取被收藏项的ID
-    const itemType = categoryHistory[categoryIndex].type;
-    console.log(categoryHistory[categoryIndex]);
-    categoryHistory[categoryIndex].isFavorite = isFavorited;
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
     fetch('/favorite', {
         method: method,
         headers: {
@@ -190,15 +151,9 @@ function toggleFavorite() {
         body: JSON.stringify({userId, itemId, itemType}),
     }).then( ()=>{
         if (myFavorite) {
-<<<<<<< HEAD
             displayFavorites(curFavoriteVideos);
         }else if (searchVideo) {
             freshSearchVideos();
-=======
-            fetchFavorites();
-        }else if (searchVideo) {
-            searchFunction();
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
         }else if (currentId !== -1) {
             freshCurIdVideos();
         }
@@ -213,11 +168,7 @@ function toggleLike() {
     console.log(isLiked);
     updateLikedStatus();
     updateLikedCount();
-<<<<<<< HEAD
     disableClickForDuration(1000);
-=======
-    disableClickForDuration(3000);
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
     const method = isLiked ? 'POST' : 'DELETE';
     const userId = getCookie('userId');  // 获取用户ID
     console.log(userId);
@@ -236,15 +187,9 @@ function toggleLike() {
         body: JSON.stringify({userId, itemId, itemType}),
     }).then( ()=>{
         if (myFavorite) {
-<<<<<<< HEAD
             freshFavoriteVideos();
         }else if (searchVideo) {
             freshSearchVideos();
-=======
-            fetchFavorites();
-        }else if (searchVideo) {
-            searchFunction();
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
         }else if (currentId !== -1) {
             freshCurIdVideos();
         }
@@ -255,8 +200,7 @@ async function shareVideo() {
     let categoryIndex = currentIndex[currentCategory] || 0;
     var videoId = categoryHistory[categoryIndex].id;
     var videoType = categoryHistory[categoryIndex].type;
-    var videoUrl = "http://soundsight.ty666.cool/?videoId=" + videoId + "&videoType=" + videoType;
-<<<<<<< HEAD
+    var videoUrl = "http://124.221.174.197/?videoId=" + videoId + "&videoType=" + videoType;
 // 检查navigator.clipboard是否可用以及是否在安全上下文中
     if (navigator.clipboard && window.isSecureContext) {
         // 尝试使用Clipboard API
@@ -296,14 +240,6 @@ async function shareVideo() {
         }
     }
 
-=======
-    try {
-        await navigator.clipboard.writeText(videoUrl);  // Copy the video URL to the clipboard
-        alert('已复制视频链接');
-    } catch (err) {
-        console.error('Error in copying text: ', err);
-    }
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
 }
 function toggleFollow() {
     if (!getCookie('userId')){
@@ -314,11 +250,7 @@ function toggleFollow() {
     console.log(isFollowed);
     updateFollowStatus();
     updateFollowText();
-<<<<<<< HEAD
     disableClickForDuration(1000);
-=======
-    disableClickForDuration(3000);
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
     const method = isFollowed ? 'POST' : 'DELETE';
     const userId = getCookie('userId');  // 获取用户ID
     console.log(userId);
@@ -336,15 +268,9 @@ function toggleFollow() {
         body: JSON.stringify({userId, followed}),
     }).then( ()=>{
         if (myFavorite) {
-<<<<<<< HEAD
             freshFavoriteVideos();
         }else if (searchVideo) {
             freshSearchVideos();
-=======
-            fetchFavorites();
-        }else if (searchVideo) {
-            searchFunction();
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
         }else if (myFollow) {
             findMyFollow();
         }else if (currentId !== -1) {
@@ -417,7 +343,7 @@ function playNextVideo() {
 function fetchVideosFromBackend() {
     var id = getCookie('userId');
     if (!id) id = -1;
-    const apiUrl = `http://soundsight.ty666.cool/video/getVideoURL?userId=`+ `${id}`+` &category=${currentCategory}`;
+    const apiUrl = `http://124.221.174.197/video/getVideoURL?userId=`+ `${id}`+` &category=${currentCategory}`;
     fetch(apiUrl, {
         method: 'GET',
     }).then(response => {
@@ -430,24 +356,7 @@ function fetchVideosFromBackend() {
             console.log("Received data from backend:", data);
 
             // 将后端返回的视频数据转换为视频对象数组
-<<<<<<< HEAD
             videoQueue = data;
-=======
-            videoQueue = data.map(videoResponse => ({
-                id: videoResponse.videoId,
-                url: videoResponse.videoURL,
-                type: videoResponse.videoType,
-                isLiked: videoResponse.isLiked,  // 初始状态，可以根据后端数据来设置
-                isFavorite: videoResponse.isFavorite,
-                isFollowed: videoResponse.isFollowed,
-                userId: videoResponse.userId,
-                username: videoResponse.username,
-                avatar: videoResponse.avatar,
-                likeCount: videoResponse.likeCount,
-                favoriteCount: videoResponse.favoriteCount,
-                descr: videoResponse.descr
-            }));
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
             // 播放第一个视频
             const firstVideo = videoQueue.shift();
             console.log(firstVideo);
@@ -546,13 +455,13 @@ function handleMenuItemClick(action) {
             updatePhoneScreenWithNewContent();
             break;
         case 'login':
-            fetch('http://soundsight.ty666.cool/login/login.html')
+            fetch('http://124.221.174.197/login/login.html')
                 .then(response => response.text())
                 .then(data => {
                     phoneContainer.innerHTML = data;
                     // 3. 在此处动态加载JavaScript脚本
                     const script = document.createElement('script');
-                    script.src = 'http://soundsight.ty666.cool/login/login.js';
+                    script.src = 'http://124.221.174.197/login/login.js';
                     // 将脚本添加到phoneContainer中，而不是body
                     phoneContainer.appendChild(script);
                 })
@@ -571,28 +480,24 @@ function handleMenuItemClick(action) {
             myFollow = false;
             myFans = false;
             currentId = -1;
-            fetch('http://soundsight.ty666.cool/favorite/favorite.html')
+            fetch('http://124.221.174.197/favorite/favorite.html')
                 .then(response => response.text())
                 .then(data => {
                     phoneContainer.innerHTML = data;
-<<<<<<< HEAD
                     displayFavorites(curFavoriteVideos);
-=======
-                    fetchFavorites();
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
                 })
                 .catch(error => {
                     console.error("Error loading HTML: ", error);
                 });
             break;
         case 'register':
-            fetch('http://soundsight.ty666.cool/register/register.html')
+            fetch('http://124.221.174.197/register/register.html')
                 .then(response => response.text())
                 .then(data => {
                     phoneContainer.innerHTML = data;
                     // 3. 在此处动态加载JavaScript脚本
                     const script = document.createElement('script');
-                    script.src = 'http://soundsight.ty666.cool/register/register.js';
+                    script.src = 'http://124.221.174.197/register/register.js';
                     // 将脚本添加到phoneContainer中，而不是body
                     phoneContainer.appendChild(script);
                 })
@@ -606,7 +511,7 @@ function handleMenuItemClick(action) {
             myFollow = false;
             myFans = false;
             currentId = -1;
-            fetch('http://soundsight.ty666.cool/search/search.html')
+            fetch('http://124.221.174.197/search/search.html')
                 .then(response => response.text())
                 .then(data => {
                     phoneContainer.innerHTML = data;
@@ -622,7 +527,7 @@ function handleMenuItemClick(action) {
             searchVideo = false;
             myFans = false;
             currentId = -1;
-            fetch('http://soundsight.ty666.cool/follow/follow.html')
+            fetch('http://124.221.174.197/follow/follow.html')
                 .then(response => response.text())
                 .then(data => {
                     phoneContainer.innerHTML = data;
@@ -638,7 +543,7 @@ function handleMenuItemClick(action) {
             myFavorite = false;
             searchVideo = false;
             currentId = -1;
-            fetch('http://soundsight.ty666.cool/follow/follow.html')
+            fetch('http://124.221.174.197/follow/follow.html')
                 .then(response => response.text())
                 .then(data => {
                     phoneContainer.innerHTML = data;
@@ -654,7 +559,7 @@ function handleMenuItemClick(action) {
             myFollow = false;
             myFans = false;
             currentId = -1;
-            fetch('http://soundsight.ty666.cool/favorite/favorite.html')
+            fetch('http://124.221.174.197/favorite/favorite.html')
                 .then(response => response.text())
                 .then(data => {
                     phoneContainer.innerHTML = data;
@@ -746,7 +651,7 @@ function fetchFavorites() {
     const userId = getCookie('userId');  // 假设你已经有了获取cookie的函数
     if (!userId) return;
 
-    fetch(`http://soundsight.ty666.cool/video/getFavorites?userId=${userId}`)
+    fetch(`http://124.221.174.197/video/getFavorites?userId=${userId}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -754,21 +659,13 @@ function fetchFavorites() {
             return response.json();
         })
         .then(data => {
-<<<<<<< HEAD
             curFavoriteVideos = data;
-=======
-            displayFavorites(data);
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
         })
         .catch(error => {
             console.error('Error fetching favorites:', error);
         });
 }
-<<<<<<< HEAD
 function    displayFavorites(favorites) {
-=======
-function displayFavorites(favorites) {
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
     const container = document.getElementById('favorites-container');
     container.innerHTML = '';  // 清空现有内容
 
@@ -791,36 +688,10 @@ function displayFavorites(favorites) {
         videoItem.appendChild(videoDescription);
 
         container.appendChild(videoItem);
-<<<<<<< HEAD
-        // 添加click事件监听器到video-item
+// 添加click事件监听器到video-item
         videoItem.addEventListener('click', () => handleVideoItemClick(favorite));
     });
 }
-=======
-        const clientVideoObject = convertToClientVideoObject(favorite);  // 转换视频对象
-        // 添加click事件监听器到video-item
-        videoItem.addEventListener('click', () => handleVideoItemClick(clientVideoObject));
-    });
-}
-
-function convertToClientVideoObject(serverVideoObject) {
-    return {
-        id: serverVideoObject.videoId,
-        url: serverVideoObject.videoURL,
-        type: serverVideoObject.videoType,
-        isLiked: serverVideoObject.isLiked,  // 初始状态，可以根据后端数据来设置
-        isFavorite: serverVideoObject.isFavorite,
-        isFollowed: serverVideoObject.isFollowed,
-        userId: serverVideoObject.userId,
-        username: serverVideoObject.username,
-        avatar: serverVideoObject.avatar,
-        likeCount: serverVideoObject.likeCount,
-        favoriteCount: serverVideoObject.favoriteCount,
-        descr: serverVideoObject.descr,
-        coverURL: serverVideoObject.coverURL
-    };
-}
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
 function addSearch() {
     const searchBox = document.getElementById('search-box');
     const searchBtn = document.getElementById('search-btn');
@@ -846,7 +717,7 @@ function searchFunction() {
     const userId = getCookie('userId');  // 假设你已经有了获取cookie的函数
     if (!userId) return;
 
-    fetch(`http://soundsight.ty666.cool/video/search?keyWords=${query}&userId=${userId}`)
+    fetch(`http://124.221.174.197/video/search?keyWords=${query}&userId=${userId}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -854,10 +725,7 @@ function searchFunction() {
             return response.json();
         })
         .then(data => {
-<<<<<<< HEAD
             curSearchVideos = data;
-=======
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
             displayFavorites(data);
         })
         .catch(error => {
@@ -959,33 +827,14 @@ function findMyFans() {
 }
 let currentId = -1;
 function findVideoById(id) {
-<<<<<<< HEAD
     currentPage = 0;
     curVideos = [];
     currentId = id;
     loadMoreVideos(id);
-=======
-    currentId = id;
-    var myId = getCookie('userId');
-    fetch(`http://soundsight.ty666.cool/video/findVideoById?id=${id}&myId=${myId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            curVideos = data;
-            displayFavorites(data);
-        })
-        .catch(error => {
-            console.error('Error fetching favorites:', error);
-        });
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
 }
 function insertVideosHtml() {
     const phoneContainer = document.querySelector('.phone-screen');
-    fetch('http://soundsight.ty666.cool/favorite/favorite.html')
+    fetch('http://124.221.174.197/favorite/favorite.html')
         .then(response => response.text())
         .then(data => {
             phoneContainer.innerHTML = data;
@@ -998,7 +847,7 @@ function insertVideosHtml() {
 function updatePhoneScreenWithNewContent() {
     const phoneContainer = document.querySelector('.phone-screen');
     phoneContainer.innerHTML = '';
-    phoneContainer.innerHTML = '<iframe class="no-border" src="http://soundsight.ty666.cool/qiniu/qiniu.html" height="400" width="200"></iframe>'
+    phoneContainer.innerHTML = '<iframe class="no-border" src="http://124.221.174.197/qiniu/qiniu.html" height="400" width="200"></iframe>'
 }
 
 // 假设handleUserClick是你希望调用的函数
@@ -1023,16 +872,11 @@ function freshCurIdVideos() {
     let categoryIndex = currentIndex[currentCategory] || 0;
     var targetId = categoryHistory[categoryIndex].id;
     var targetType = categoryHistory[categoryIndex].type;
-<<<<<<< HEAD
     let foundVideo = curVideos.find(video => video.id === targetId && video.type === targetType);
-=======
-    let foundVideo = curVideos.find(video => video.videoId === targetId && video.videoType === targetType);
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
     if (foundVideo) {
         foundVideo.isFavorite = categoryHistory[categoryIndex].isFavorite;
         foundVideo.isLiked = categoryHistory[categoryIndex].isLiked;
         foundVideo.isFollowed = categoryHistory[categoryIndex].isFollowed;
-<<<<<<< HEAD
         foundVideo.likeCount = categoryHistory[categoryIndex].likeCount;
         foundVideo.favoriteCount = categoryHistory[categoryIndex].favoriteCount;
     }
@@ -1107,7 +951,7 @@ function loadMoreVideos(id) {
 
     isLoading = true; // 开始加载，将加载状态设为true
     var myId = getCookie('userId');
-    fetch(`http://soundsight.ty666.cool/video/findVideoById?id=${id}&myId=${myId}&page=${currentPage}&size=${pageSize}`)
+    fetch(`http://124.221.174.197/video/findVideoById?id=${id}&myId=${myId}&page=${currentPage}&size=${pageSize}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1143,8 +987,3 @@ phoneScreen.addEventListener('scroll', () => {
 });
 
 
-=======
-    }
-    displayFavorites(curVideos);
-}
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041

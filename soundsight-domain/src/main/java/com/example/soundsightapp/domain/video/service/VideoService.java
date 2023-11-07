@@ -30,12 +30,7 @@ public class VideoService {
         return videoRepository.searchVideos(keyWords, userId);
     }
 
-<<<<<<< HEAD
     public List<VideoResponse> findVideoByIdAndUserId(String id, String myId, Integer page, Integer size) {
         return videoRepository.findVideoByIdAndUserId(id, myId, page, size);
-=======
-    public List<VideoResponse> findVideoByIdAndUserId(String id, String myId) {
-        return videoRepository.findVideoByIdAndUserId(id, myId);
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
     }
 }

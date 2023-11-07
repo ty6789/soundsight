@@ -95,11 +95,7 @@ public abstract class BaseVideoRepository {
 
     protected VideoResponse createVideoResponse(Video video, Integer userId, String type) {
         Integer videoId = video.getId();
-<<<<<<< HEAD
         Boolean count = favoriteDao.count(userId, videoId, type);
-=======
-        Integer count = favoriteDao.count(userId, videoId, type);
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
         UserVideo userVideo = userVideoDao.selectByVideoIdAndType(videoId, type);
         //anime/11.mp4
         String url = VideoURLHelper.getAvatarUrl(userVideo.getAvatar().toString());
@@ -108,11 +104,7 @@ public abstract class BaseVideoRepository {
         Boolean isLiked = stringRedisTemplate.opsForSet().isMember(type + video.getId() + ":video:like", String.valueOf(userId));
         Boolean isFollowed = stringRedisTemplate.opsForSet().isMember("following:" + userId, userVideo.getUserId().toString());
         return new VideoResponseBuilder().coverURL(coverURL).videoURL(videoUrl).videoId(videoId).liked(isLiked)
-<<<<<<< HEAD
                 .favorite(count).userId(userVideo.getUserId()).username(userVideo.getUsername())
-=======
-                .favorite(count > 0 ? true : false).userId(userVideo.getUserId()).username(userVideo.getUsername())
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
                 .avatar(url).likeCount(video.getLike()).favoriteCount(video.getFavorite())
                 .followed(isFollowed).descr(video.getDesc()).videoType(type).build();
     }

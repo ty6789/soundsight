@@ -13,11 +13,7 @@ public interface FavoriteDao {
 
     void delFavorite(@Param("userId") Integer userId, @Param("itemId") Integer itemId, @Param("itemType") String itemType);
 
-<<<<<<< HEAD
     Boolean count(@Param("userId") Integer userId, @Param("itemId") Integer itemId, @Param("itemType") String itemType);
-=======
-    Integer count(@Param("userId") Integer userId, @Param("itemId") Integer itemId, @Param("itemType") String itemType);
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
 
     List<Favorite> getUserVideoByUserId(Integer userId);
 }

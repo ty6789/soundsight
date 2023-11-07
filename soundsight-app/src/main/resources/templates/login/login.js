@@ -13,7 +13,7 @@
         console.log(loginData);
 
         // 将数据发送到后端验证
-        fetch('http://soundsight.ty666.cool/user/login', {
+        fetch('http://124.221.174.197/user/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -41,7 +41,7 @@
 
     function updatePhoneScreenWithNewContent() {
         const phoneContainer = document.querySelector('.phone-screen');
-        phoneContainer.innerHTML = '<iframe class="no-border" src="http://soundsight.ty666.cool/qiniu/qiniu.html" height="400" width="200"></iframe>'
+        phoneContainer.innerHTML = '<iframe class="no-border" src="http://124.221.174.197/qiniu/qiniu.html" height="400" width="200"></iframe>'
     }
 
     // 设置cookie

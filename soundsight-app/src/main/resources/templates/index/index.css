@@ -37,10 +37,7 @@ nav a {
     font-weight: bold;
 }
 #videoContainer {
-    margin-left: 20px;
-    margin-right: 10px;
-    margin-bottom: 80px;
-    margin-top: 10px;
+    margin: auto;
     width: 1000px; /* Set the same width as the video element */
     height: 580px; /* Set the same height as the video element */
     border: 4px solid #ddd; /* Set border style */
@@ -52,6 +49,9 @@ nav a {
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
     margin: 0 !important;
+}
+.video-js {
+    margin: auto;
 }
 #navigation {
     display: flex;
@@ -80,7 +80,7 @@ nav a {
     width: 50px;
     height: 50px;
     background-color: #ccc;  /* 临时的背景色，以便您可以看到div的大小 */
-    margin: auto;
+    margin: auto 5px auto auto;
 }
 
 .user-info:hover .dropdown {
@@ -111,8 +111,7 @@ nav a {
     position: relative;
     font-family: Arial, sans-serif;
     font-size: 14px;
-    margin: auto;
-    margin-right: 50px;
+    margin: auto auto auto 5px;
     padding-bottom: 20px; /* 调整该值以增大dropdown的底部大小 */
 }
 
@@ -261,6 +260,9 @@ nav a {
 #category-list .active {
     color: green;
 }
+#category-list {
+    margin: auto;
+}
 .other-user-avatar{
     background-size: cover;
     background-repeat: no-repeat;
@@ -280,6 +282,7 @@ nav a {
     border: 1px solid #ccc;  /* 灰色边框 */
     margin-bottom: 10px;  /* 与手机头部的间距 */
     margin-right: 10px;
+    margin-top: 10px;
     overflow-y: auto;  /* 如果评论很多，将出现垂直滚动条 */
     color: white;
 }

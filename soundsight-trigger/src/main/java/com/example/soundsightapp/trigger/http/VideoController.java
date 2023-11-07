@@ -36,12 +36,7 @@ public class VideoController {
     }
 
     @GetMapping("/findVideoById")
-<<<<<<< HEAD
     public List<VideoResponse> findVideoById(@RequestParam String id, @RequestParam String myId, @RequestParam Integer page, @RequestParam Integer size) {
         return videoService.findVideoByIdAndUserId(id, myId, page, size);
-=======
-    public List<VideoResponse> findVideoById(@RequestParam String id, @RequestParam String myId) {
-        return videoService.findVideoByIdAndUserId(id, myId);
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
     }
 }

@@ -17,9 +17,5 @@ public interface IVideoRepository {
 
     List<VideoResponse> searchVideos(String keyWords, Integer userId);
 
-<<<<<<< HEAD
     List<VideoResponse> findVideoByIdAndUserId(String id, String myId, Integer page, Integer size);
-=======
-    List<VideoResponse> findVideoByIdAndUserId(String id, String myId);
->>>>>>> f248190e083aba71e5a943309c369f7ecb9ad041
 }
